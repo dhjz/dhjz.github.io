@@ -44,6 +44,7 @@
     
     var canvas = document.getElementById('canvas');
     var C_WIDTH = 540;
+	  getViewPort();
     /**
  *
  * 识别移动设备
@@ -82,6 +83,7 @@ function getViewPort(){
         document.body.style.width=viewWidth;
         C_WIDTH=viewWidth;
         C_WIDTH=viewHeight;
+	    alert('666');
     }
     else if(system.win){
       C_WIDTH=540;
@@ -89,7 +91,7 @@ function getViewPort(){
     }
 }
 
-getViewPort();
+
 
     var LINE_COLOR = "#999";
     canvas.width = C_WIDTH;
