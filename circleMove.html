@@ -1,0 +1,221 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    #canvas {
+      display: block;
+      margin: 0 auto;
+      padding: 0;
+      border: 1px solid #ccc;
+      box-shadow: 3px 3px 5px #ddd;
+    }
+  </style>
+
+</head>
+<body>
+  <canvas id="canvas">111</canvas>
+  <script>
+  window.onload = function(){
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    C_WIDTH = 600;
+    canvas.width = C_WIDTH;
+    canvas.height = C_WIDTH;
+    // mouse = utils.captureMouse(canvas);
+
+    //定义球的轨迹半径和缩放大小
+    var angle = 0,
+        scale = 1.5,
+        R1 = 130*scale,
+        R2 = 90*scale,
+        R3 = 60*scale,
+        R4 = 170*scale;
+        R5 = 30*scale;
+    // 新建若干个球对象，定义球的半径和颜色
+    var ball1 = new Ball(8,"#f33");
+    var ball2 = new Ball(10,"#55f");
+    var ball3 = new Ball(9,"#88c");
+    var ball4 = new Ball(11,"#fc6");
+    var ball5 = new Ball(5,"#555");
+    //算是每帧吧，每帧增加球体位置的sin(θ),cos(θ)中θ的大小，则位置发生变化，且是圆周运动（Rsin(θ)²+Rcos(θ)²=R）
+    var time1 = setInterval(function () {
+      //每个球对应画轨迹
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.beginPath();
+      ctx.arc(C_WIDTH/2,C_WIDTH/2,R1,0,2*Math.PI,false);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(C_WIDTH/2,C_WIDTH/2,R2,0,2*Math.PI,false);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(C_WIDTH/2,C_WIDTH/2,R3,0,2*Math.PI,false);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(C_WIDTH/2,C_WIDTH/2,R4,0,2*Math.PI,false);
+      ctx.closePath();
+      ctx.stroke();
+      
+      //中心球体
+      ctx.beginPath();
+      ctx.arc(C_WIDTH/2,C_WIDTH/2,30,0,2*Math.PI,false);
+      ctx.closePath();
+      ctx.fillStyle = "#f64";
+      ctx.fill();
+      ball1.x = C_WIDTH/2+R1*Math.sin(angle/1.8);
+      ball1.y = C_WIDTH/2+R1*Math.cos(angle/1.8);
+      // angle+=0.05;
+      ball1.draw(ctx);
+      
+      //小球围绕小球的虚线轨迹
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc( ball1.x,ball1.y,R5,0,2*Math.PI,false);
+      ctx.closePath();
+      ctx.setLineDash([25,5]);
+      ctx.stroke();
+      ctx.restore();
+
+      //画每个球，
+      ball2.x = C_WIDTH/2+R2*Math.sin(angle);
+      ball2.y = C_WIDTH/2-R2*Math.cos(angle);
+      // angle+=0.05;
+      ball2.draw(ctx);
+
+      ball3.x = C_WIDTH/2-R3*Math.sin(angle);
+      ball3.y = C_WIDTH/2-R3*Math.cos(angle);
+      // angle+=0.05;
+      ball3.draw(ctx);
+      ball4.x = C_WIDTH/2-R4*Math.sin(angle/1.4);
+      ball4.y = C_WIDTH/2+R4*Math.cos(angle/1.4);
+      // angle+=0.05;
+      ball4.draw(ctx);
+
+      ball5.x = ball1.x+R5*Math.sin(angle/0.7);
+      ball5.y = ball1.y+R5*Math.cos(angle/0.7);
+      // angle+=0.05;
+      ball5.draw(ctx);
+
+      angle+=0.05;
+      // R-=0.3;
+    },20)
+   }
+
+  </script>
+ <!-- <script>
+    window.utils = {};
+    window.utils.captureMouse = function(ele){
+      var mouse = {x:0,y:0};
+      ele.addEventListener('mousemove',function(event){
+        var ex,ey;
+        event  = event || window.event || window.arguments.callee.caller.arguments[0];
+        if (event.pageX || event.pageY) {
+          ex = event.pageX;
+          ey = event.pageY;
+        }else{
+          ex = event.clientX+document.body.scrollLeft+document.documentElement.scrollLeft;
+          ey = event.clientY+document.body.scrollTop+document.documentElement.scrollTop;
+        }
+        ex-=ele.offsetLeft;
+        ey-=ele.offsetTop;
+        mouse.x = ex;
+        mouse.y = ey;
+      },false);
+      // console.log(mouse.x,mouse.y);
+      return mouse;
+    }
+  
+    window.utils.captureTouch = function (element) { 
+      var touch = { 
+                    x: null, 
+                    y: null, 
+                    isPressed: false, 
+                    event: null 
+                    };
+      var body_scrollLeft = document.body.scrollLeft, 
+          element_scrollLeft = document.documentElement.scrollLeft, 
+          body_scrollTop = document.body.scrollTop, 
+          element_scrollTop = document.documentElement.scrollTop, 
+          offsetLeft = element.offsetLeft, 
+          offsetTop = element.offsetTop; 
+    
+    // 绑定touchstart事件 
+      element.addEventListener('touchstart', function (event) { 
+        touch.isPressed = true; 
+        touch.event = event; 
+      }, false); 
+    
+    // 绑定touchend事件 
+      element.addEventListener('touchend', function (event) { 
+        touch.isPressed = false; 
+        touch.x = null; 
+        touch.y = null; 
+        touch.event = event; 
+      }, false); 
+    
+    //绑定touchmove事件 
+      element.addEventListener('touchmove', function (event) { 
+        var x, y, 
+            touch_event = event.touches[0]; //第一次touch 
+    
+        if (touch_event.pageX || touch_event.pageY) { 
+          x = touch_event.pageX; 
+          y = touch_event.pageY; 
+        } else { 
+          x = touch_event.clientX + body_scrollLeft + element_scrollLeft; 
+          y = touch_event.clientY + body_scrollTop + element_scrollTop; 
+        } 
+        //剪去偏移量 
+        x -= offsetLeft; 
+        y -= offsetTop; 
+    
+        touch.x = x; 
+        touch.y = y; 
+        touch.event = event; 
+      }, false); 
+      //返回touch对象 
+      return touch; 
+    };
+    
+  </script> -->
+  <!-- <script type="text/javascript" src="ball.js"></script> -->
+  <script>
+  //定义球对象
+  function Ball(radius,color){
+  if(radius == undefined)radius=40;
+  if(color == undefined)color="#3333ff";
+  this.x=0;
+  this.y=0;
+  this.vx=0;
+  this.vy=0;
+  this.rotate=0;
+  this.radius=radius;
+  this.color=color;
+  this.scaleX=1;
+  this.scaleY=1;
+  this.lineWidth=1;
+  }
+
+  Ball.prototype.draw = function(ctx){
+    ctx.save();
+    ctx.translate(this.x,this.y);
+    ctx.rotate(this.rotate);
+    ctx.scale(this.scaleX,this.scaleY);
+    ctx.lineWidth = this.lineWidth;
+    ctx.strokeStyle = this.color;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(0,0,this.radius,0,Math.PI*2,false);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+  };
+
+  </script>
+</body>
+
+</html>
