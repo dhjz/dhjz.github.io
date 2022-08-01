@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
+    body{font-family: "Microsoft YaHei";font-size: 14px;}
+    #canvas{
+      /* padding: 10px; */
+      margin: 0 auto;
+      margin-top: 10px;
+      display: block;
+      border: 1px solid #ccc;
+      box-shadow: 3px 3px 7px #ddd;
+      position: relative;
+    }
+    .menu{
+      text-align: center;
+      margin-top: 20px
+    }
+    #restart{
+      padding: 6px 10px;
+      background: #2d79ea;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas">您的设备不支持canvas，请用chrome浏览器或者其他浏览器极速模式</canvas>
+  <div class="menu">
+    <span id="restart">重新开始</span>
+  </div>
+
+  <script>
+    document.getElementById('restart').onclick = function(){
+      window.location.reload();
+    }
+    
+    var canvas = document.getElementById('canvas');
+    var C_WIDTH = 540;
+	  getViewPort();
+    /**
+ *
+ * 识别移动设备
+ * 检测相应的设备。
+ * */
+
+var ua=navigator.userAgent;
+var system={
+    win:false,
+    mac:false,
+    x11:false,
+    //mobile
+    iphone:false,
+    ipad:false,
+    ios:false,
+    android:false,
+    winMobile:false
+};
+
+//
+var p=navigator.platform;
+system.win=p.indexOf('Win')==0;
+system.mac=p.indexOf('Mac')==0;
+system.x11=(p=='x11')||(p.indexOf('Linux')==0);
+
+system.iphone=ua.indexOf('iPhone')>-1;
+system.ipad=ua.indexOf('iPad')>-1;
+system.android=ua.indexOf('Android')>-1;
+
+function getViewPort(){
+    var viewHeight=window.innerHeight||document.documentElement.clientHeight;
+    var viewWidth=window.innerWidth||document.documentElement.clientWidth;
+    console.log(viewHeight,viewWidth);
+    if(system.iphone){
+        //alert(viewWidth,viewHeight);
+        document.body.style.width=viewWidth;
+        C_WIDTH=viewWidth;
+        C_WIDTH=viewHeight;
+	    alert('666');
+    }
+    else if(system.win){
+      C_WIDTH=540;
+      C_WIDTH=540;
+    }
+}
+
+
+
+    var LINE_COLOR = "#999";
+    canvas.width = C_WIDTH;
+    canvas.height = C_WIDTH;
+    var ctx = canvas.getContext('2d');
+    var isMe = true;
+    var whoWin = '';
+    var over = false;
+    var you = [];
+    var me = [];
+    canvas.addEventListener('click',function(e){drawHere(ctx,e)});
+
+    //画棋盘
+    for(i = 0;i<Math.floor(C_WIDTH/30)+1; i++){
+      // ctx.save();
+      ctx.strokeStyle=LINE_COLOR;
+      ctx.beginPath();
+      ctx.moveTo(0,30*i);
+      ctx.lineTo(C_WIDTH,30*i);
+      ctx.stroke();
+      ctx.moveTo(30*i,0);
+      ctx.lineTo(30*i,C_WIDTH);
+      ctx.stroke();
+      
+      // ctx.restore();
+    }
+    ctx.beginPath();
+    ctx.arc(Math.floor(Math.floor(C_WIDTH/30)/2)*30,Math.floor(Math.floor(C_WIDTH/30)/2)*30,3,0,2*Math.PI);
+    ctx.fillStyle='#666';
+    ctx.fill();
+
+    
+    //点击处画棋子，并把坐标加入you 和 me 数组中
+    function drawHere(ctx,event){
+      var event  = event || window.event || window.arguments.callee.caller.arguments[0];
+			var x = event.clientX-ctx.canvas.getBoundingClientRect().left;
+			var y = event.clientY-ctx.canvas.getBoundingClientRect().top;
+      var i = x % 30 > 15 ? (Math.floor(x/30)+1) : (Math.floor(x/30));
+      var j = y % 30 > 15 ? (Math.floor(y/30)+1) : (Math.floor(y/30));
+      if(over)return;
+      if (isEleInArray([i,j],you) || isEleInArray([i,j],me)) return;
+      drawOne(i,j,isMe);
+
+      if(isMe){
+        me.push([i,j]);
+      }else{
+        you.push([i,j]);
+      }
+      if(isWin(i,j,isMe)){
+        over = true;
+        setTimeout(function(){alert('恭喜：' + whoWin + '赢了')},200);
+      }
+      isMe = !isMe;
+
+    }
+
+    //判断是否赢了
+    function isWin(i,j,_isMe){
+      if(me.length >4){
+        if(_isMe){
+          //me横纵向
+          var me_arrayx = [];
+          var me_arrayy = [];
+          var me_arrayUR = [];
+          var me_arrayDR = [];
+          console.log(i,j);
+          for (let k = 0; k< me.length; k++) {
+            if (me[k][1] == j) me_arrayx.push(me[k][0]);
+            if (me[k][0] == i) me_arrayy.push(me[k][1]);
+            //坐标之和或者之差加起来相等了，他们肯定在一条斜线上，，这个时候只用判断x的值是否连续就行了
+            if (me[k][0] + me[k][1] == i+j) me_arrayUR.push(me[k][0]);
+            if (me[k][0] - me[k][1] == i-j) me_arrayDR.push(me[k][0]);
+            console.log(me[k]);
+          }
+          if (isWinInHZ(i,me_arrayx) || isWinInHZ(j,me_arrayy) || isWinInHZ(i,me_arrayUR) || isWinInHZ(i,me_arrayDR)) {
+            whoWin = '白棋';
+            return true;
+          }
+        }else{
+          //you横纵向
+          var you_arrayx = [];
+          var you_arrayy = [];
+          var you_arrayUR = [];
+          var you_arrayDR = [];
+          for (let k = 0; k< you.length; k++) {
+            if (you[k][1] == j)you_arrayx.push(you[k][0]);
+            if (you[k][0] == i)you_arrayy.push(you[k][1]);
+            if (you[k][0] + you[k][1] == i+j) you_arrayUR.push(you[k][0]);
+            if (you[k][0] - you[k][1] == i-j) you_arrayUR.push(you[k][0]);
+          }
+          if (isWinInHZ(i,you_arrayx) || isWinInHZ(j,you_arrayy) || isWinInHZ(i,you_arrayUR) || isWinInHZ(i,you_arrayDR)) {
+            whoWin = '黑棋';
+            return true;
+          }
+        }
+      }
+      
+    }
+
+    //判断横纵向向isWinInHZ
+    function isWinInHZ(x,array){
+      for (let i = x-4; i < x+1; i++) {
+        if (isArrayInArray([i,i+1,i+2,i+3,i+4],array)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    //画棋子
+    function drawOne(i,j,isMe){
+      ctx.beginPath();
+      ctx.arc(i*30,j*30,13,0,Math.PI*2);
+      var grd = ctx.createRadialGradient(i*30,j*30,0,i*30,j*30,13);
+      if(isMe){
+        grd.addColorStop(0,"#f9f9f9");
+        grd.addColorStop(1,"#d1d1d1");
+      }else{
+        grd.addColorStop(0,"#636766");
+        grd.addColorStop(1,"#0a0a0a");
+      }
+      ctx.fillStyle = grd;
+      ctx.fill();
+
+    }
+
+    //判断一维数组是否包含于二维数组中，如果是，就返回true，不能在当前位置下棋
+    function isEleInArray(element,array){
+      for (const ele of array) {
+        if (ele.length == element.length) {
+          for (const index in ele) {
+            if (ele[index] != element[index]) {//两个元素不相等，终止
+              break;
+            }
+            if (index == ele.length -1) {//到这一步说明每个元素都相等
+              return true;
+            }
+          }
+        }
+      }
+      return false;
+    }
+    
+
+    //判断一个数组是否包含另外一个数组
+    function isArrayInArray(array1,array2){
+      for (const index in array1) {
+        if(array2.indexOf(array1[index]) == -1){//如果array2里面没有此元素，就直接返回false
+          return false;
+        }
+      }
+      return true; //都有这些元素，返回true
+    }
+  </script>
+</body>
+</html>
