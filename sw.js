@@ -12,7 +12,7 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-    console.log(event, this, 'this.navigator.onLine......' + this.navigator.onLine);
+    console.log('this.navigator.onLine......' + this.navigator.onLine); //event, this,
     event.respondWith(
         caches.match(event.request).then(function (response) {
             if (response) { // 命中缓存
