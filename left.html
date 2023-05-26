@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <style>
+    .el-date-table td.disabled div {
+      background: #409EFF;
+      color: #fff;
+      border: 1px solid;
+    }
+    .el-date-table td.today.disabled span {
+      color: #fff;
+    }
+    .left-item {
+      margin: 10px 0;
+    }
+    .el-input {
+      width: 70px;
+      margin: 0 6px;
+    }
+    .el-input-number--small {
+      width: 70px;
+      margin: 0 11px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- <el-button @click="visible = true">Button</el-button>
+    <el-dialog :visible.sync="visible" title="Hello world">
+      <p>Try Element</p>
+    </el-dialog>
+    <div class="block">
+      <span class="demonstration">默认</span>
+      <el-date-picker
+        v-model="value1"
+        type="daterange"
+        :picker-options="pickerOptions"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期">
+      </el-date-picker>
+    </div> -->
+    <h2>如果你这辈子还有<el-input v-model="leftYear"></el-input>年</h2>
+    <div class="left-item" v-for="(item, ind) in list" :key="ind">
+      <span>如果你与<el-input size="small" v-model="item.name" ></el-input></span>
+      <span>每年相见<el-input-number size="small" v-model="item.per" :controls="false"></el-input-number>天, </span>
+      <span>每天<el-input-number size="small" v-model="item.hour" :controls="false"></el-input-number>小时, </span>
+      你这辈子与他还能相见共 <b>{{ (leftYear * item.per * item.hour / 24).toFixed(1) }} </b>天, <b>{{ (leftYear * item.per * item.hour / 720).toFixed(1) }} </b>月
+    </div>
+    <el-button size="small" @click="add" type="primary">添加</el-button>
+  </div>
+</body>
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: function() {
+        return { 
+          leftYear: 30,
+          list: [
+            { name: '父母', per: 4, hour: 24 }
+          ],
+          visible: false,
+          value1: null,
+          pickerOptions: {
+            disabledDate(date) {
+              console.log(date);
+              return [14, 15, 16, 8, 7, 6, 20, 21, 22, 23].includes(date.getDate())
+              // return date.getTime() < Date.now() - 8.64e7;
+            }
+          }
+        }
+      },
+      methods: {
+        disableDate(d) {
+          console.log(d);
+          return false
+        },
+        add() {
+          this.list.push({ name: '', per: 2, hour: 4 })
+        }
+      },
+    })
+  </script>
+</html>
