@@ -29,3 +29,7 @@ button+button, .btn+.btn, .btn+button, button+.btn { margin-left: 10px; }
 .danger, .error { color: #f56c6c; }
 .warning { color: #e6a23c; }
 .success { color: #67c23a; }
+table { border-collapse: collapse; width: 100%; }
+table tr th { background: #f5f7fa; color: #909399; font-weight: bold; border: 1px solid #ebeef5; padding: 8px 4px; }
+table tr td { border: 1px solid #ebeef5; padding: 8px 4px; text-align: center; }
+table tr:hover { background-color: #f5f7fa; }
