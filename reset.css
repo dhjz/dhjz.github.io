@@ -1,6 +1,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-size: 14px; padding: 10px; --input-height: 32px; --input-radius: 4px}
 a {text-decoration: none;} li, ol { list-style: none; }
+i { font-style: normal; }
 .hide,.hidden{display: none;}
 .ftl{float: left;}
 .ftr{float: right;}
@@ -24,7 +25,7 @@ button[danger], button[error], .btn[danger], .btn[error] { background: #f56c6c; 
 button[success], .btn[success] { background: #67c23a; color: #fff; border-color: #67c23a; }
 button[warning], .btn[warning] { background: #e6a23c; color: #fff; border-color: #e6a23c; }
 button:hover, .btn:hover { opacity: .9; }
-button+button, .btn+.btn, .btn+button, button+.btn { margin-left: 10px; }
+button+button, .btn+.btn, .btn+button, button+.btn, input+button, select+button,select+select, .input-line+button { margin-left: 10px; }
 .primary { color: #409eff; }
 .danger, .error { color: #f56c6c; }
 .warning { color: #e6a23c; }
@@ -33,3 +34,20 @@ table { border-collapse: collapse; width: 100%; }
 table tr th { background: #f5f7fa; color: #909399; font-weight: bold; border: 1px solid #ebeef5; padding: 8px 4px; }
 table tr td { border: 1px solid #ebeef5; padding: 8px 4px; text-align: center; }
 table tr:hover { background-color: #f5f7fa; }
+.dialog { position: fixed; width: 100vw; height: 100vh; left: 0; top: 0; z-index: 9999; background: rgba(0, 0, 0, 0.5); text-align: center; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+.dialog-cont { width: 90%; height: 84vh; overflow: auto;  background: #fff; border-radius: 12px; padding: 10px; }
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-1 { flex: 1; width: 0; }
+.flex-col { flex-direction: column; }
+.ai-c { align-items: center; }
+.jc-sb{ justify-content: space-between; }
+.jc-c { justify-content: center; }
+.jc-sa { justify-content: space-around; }
+.wh-full { width: 100%; height: 100%; }
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+@media screen and (min-width: 1200px) {
+  ::-webkit-scrollbar {	width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb {	background-color: #ddd; border-radius: 6px; }
+}
