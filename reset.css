@@ -34,6 +34,8 @@ button+button, .btn+.btn, .btn+button, button+.btn, input+button, select+button,
 .success { color: #67c23a; }
 .dialog { position: fixed; width: 100vw; height: 100vh; left: 0; top: 0; z-index: 9999; background: rgba(0, 0, 0, 0.5); text-align: center; display: flex; align-items: center; justify-content: center; flex-direction: column; }
 .dialog-cont { width: 90%; height: 84vh; overflow: auto;  background: #fff; border-radius: 12px; padding: 10px; }
+.dialog-close { position: absolute;  top: 0; right: 0; font-size: 24px; color: #eee; padding: 6px 8px; line-height: 1; cursor: pointer; }
+.dialog-close:after { content: '\00D7'; }
 .flex { display: flex; }
 .flex-center { display: flex; align-items: center; justify-content: center; }
 .flex-1 { flex: 1; width: 0; }
