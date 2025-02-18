@@ -28,6 +28,8 @@ button[primary], .btn[primary] { background: #409eff; color: #fff; border-color:
 button[danger], button[error], .btn[danger], .btn[error] { background: #f56c6c; color: #fff; border-color: #f56c6c; }
 button[success], .btn[success] { background: #67c23a; color: #fff; border-color: #67c23a; }
 button[warning], .btn[warning] { background: #e6a23c; color: #fff; border-color: #e6a23c; }
+button.disabled, .btn.disabled, button[disabled], .btn[disabled] { background: #c8c9cc; border-color: #c8c9cc; color: #fff; cursor: not-allowed; }
+button[primary].disabled, .btn[primary].disabled, button[primary][disabled], .btn[primary][disabled] { background-color: #a0cfff;  border-color: #a0cfff; }
 button:hover, .btn:hover { opacity: .9; }
 button+button, .btn+.btn, .btn+button, button+.btn, input+button, select+button,select+select, .input-line+button { margin-left: 10px; }
 .primary { color: #409eff; }
