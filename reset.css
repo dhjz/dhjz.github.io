@@ -55,6 +55,12 @@ table { border-collapse: collapse; width: 100%; }
 table tr th { background: #f5f7fa; color: #909399; font-weight: bold; border: 1px solid #ebeef5; padding: 8px 4px; }
 table tr td { border: 1px solid #ebeef5; padding: 8px 4px; text-align: center; }
 table tr:hover { background-color: #f5f7fa; }
+.p10{padding:10px;}.p15{padding:15px;}.p20{padding:20px;}
+.m10{margin:10px;}.m15{margin:15px;}.m20{margin:20px;}
+.mb10{margin-bottom:10px;}.mb15{margin-bottom:15px;}.mb20{margin-bottom:20px;}
+.mr10{margin-right:10px;}.mr15{margin-right:15px;}.mr20{margin-right:20px;}
+.mx10{margin:0 10px;}.mx15{margin:0 15px;}.mx20{margin:0 20px;}
+.my10{margin:10px 0;}.my15{margin:15px 0;}.my20{margin:20px 0;}
 @media screen and (min-width: 1200px) {
   ::-webkit-scrollbar {	width: 8px; height: 8px; }
   ::-webkit-scrollbar-thumb {	background-color: #ddd; border-radius: 6px; }
