@@ -65,3 +65,8 @@ table tr:hover { background-color: #f5f7fa; }
   ::-webkit-scrollbar {	width: 8px; height: 8px; }
   ::-webkit-scrollbar-thumb {	background-color: #ddd; border-radius: 6px; }
 }
+
+/* simple
+input, select { background-color: #fff; border-radius: 4px; border: 1px solid #dcdfe6;  color: #333; line-height: 32px; padding: 0 10px; outline: none; margin-right: 20px; }
+button{ background: #409eff; border: none; color: #fff; line-height: 32px; padding: 0px 10px; border-radius: 4px; cursor: pointer; }
+*/
