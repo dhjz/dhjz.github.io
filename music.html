@@ -257,6 +257,7 @@
       <h2 class="section-title">
         <i class="fas fa-align-left"></i>
         歌词
+        <span id="time-span"></span>
       </h2>
       <div class="lyrics-container" id="lyricsContainer">
         <div class="lyric-line">暂无歌词</div>
@@ -395,6 +396,9 @@
       try {
         showNotification('正在加载音乐...', 'info');
 
+        // 获取歌词
+        loadLyrics(song);
+
         // 获取当前选择的音质
         const quality = document.getElementById('qualitySelect').value;
 
@@ -405,9 +409,6 @@
         if (urlData && urlData.url) {
           audioPlayer.src = urlData.url;
           audioPlayer.load();
-
-          // 获取歌词
-          loadLyrics(song);
 
           // 启用下载按钮
           document.getElementById('downloadSongBtn').disabled = false;
@@ -598,6 +599,8 @@
 
     // 加载歌词
     async function loadLyrics(song) {
+      lyricsContainer.innerHTML = '<div class="lyric-line">加载歌词中...</div>'
+      document.getElementById('time-span').innerHTML = ''
       try {
         const response = await fetch(`${API_BASE}?types=lyric&source=${song.source}&id=${song.lyric_id || song.id}`);
         const data = await response.json();
@@ -636,6 +639,8 @@
       });
 
       currentLyrics.sort((a, b) => a.time - b.time);
+      console.log(currentLyrics[currentLyrics.length - 1]);
+      document.getElementById('time-span').innerHTML = `[end: ${formatTime(currentLyrics[currentLyrics.length - 1].time)}]`;
       displayLyrics();
     }
 
