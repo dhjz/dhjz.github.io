@@ -81,7 +81,7 @@
     .action-btn:hover { background: rgba(255, 107, 107, 0.3); color: #ff6b6b; transform: scale(1.1); }
     .lyrics-section { background: rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 25px; backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); position: sticky; top: 120px; height: calc(100vh - 240px); overflow: hidden; display: flex; flex-direction: column; }
     .lyrics-container { flex: 1; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.3) transparent; padding-right: 10px; }
-    .lyric-line { padding: 8px 0; transition: all 0.3s ease; cursor: pointer; border-radius: 6px; padding-left: 10px; margin-bottom: 4px; color: rgba(255, 255, 255, 0.6); line-height: 1.6; }
+    .lyric-line, .lyric-empty { padding: 8px 0; transition: all 0.3s ease; cursor: pointer; border-radius: 6px; padding-left: 10px; margin-bottom: 4px; color: rgba(255, 255, 255, 0.6); line-height: 1.6; }
     .lyric-line:hover { background: rgba(255, 255, 255, 0.05); color: rgba(255, 255, 255, 0.8); }
     .lyric-line.active { color: #ff6b6b; font-weight: 600; background: rgba(255, 107, 107, 0.1); transform: scale(1.02); border-left: 3px solid #ff6b6b; }
     .loading, .error, .empty-state { text-align: center; padding: 30px 20px; color: rgba(255, 255, 255, 0.7); }
@@ -272,7 +272,7 @@
           <span v-if="lyricsEnd">[end: {{ formatTime(lyricsEnd) }}]</span>
         </h2>
         <div class="lyrics-container" ref="lyricsContainer">
-          <div class="lyric-line" v-if="!lyrics.length">暂无歌词</div>
+          <div class="lyric-empty" v-if="!lyrics.length">暂无歌词</div>
           <div 
             v-for="(lyric, index) in lyrics" 
             :key="index"
@@ -550,12 +550,11 @@
           // 自动滚动到当前歌词
           if (activeIndex >= 0 && this.$refs.lyricsContainer) {
             const container = this.$refs.lyricsContainer;
-            const activeLine = container.children[activeIndex + 1]; // +1 因为第一个是"暂无歌词"
+            const activeLine = container.children[activeIndex];
             if (activeLine) {
               const containerHeight = container.clientHeight;
               const lineHeight = activeLine.offsetHeight;
               const lineOffsetTop = activeLine.offsetTop;
-              
               const idealScrollTop = lineOffsetTop - (containerHeight / 2) + (lineHeight / 2);
               const scrollThreshold = containerHeight * 0.3;
               
